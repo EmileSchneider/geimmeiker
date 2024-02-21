@@ -46,7 +46,7 @@ void Model::opengl_bind_uvbuffer() {
 }
 
 void Model::opengl_draw() {
-  glDrawArrays(GL_TRIANGLES, 0, vertices.size() * 3);
+    glDrawArrays(GL_TRIANGLES, 0, vertices.size() * 3);
 }
 
 Model::~Model() {}

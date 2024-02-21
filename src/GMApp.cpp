@@ -1,30 +1,30 @@
-#include "Shader.hpp"
 #include <algorithm>
 #include <fstream>
-#include <glm/ext/matrix_transform.hpp>
-#include <glm/glm.hpp>
 #include <iostream>
 #include <sstream>
 #include <stdio.h>
 #include <string>
 #include <vector>
-
-using namespace std;
-
 #include <stdlib.h>
 #include <string.h>
 
+using namespace std;
+
+#include "Shader.hpp"
 #include "Controls.hpp"
 #include "GMApp.hpp"
 #include "objloader.hpp"
 #include "Model.hpp"
+#include "texture.hpp"
+#include "Grid.hpp"
+
 #include <GL/glew.h>
 
-#include "texture.hpp"
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/glm.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
-
 
 using namespace glm;
 
@@ -85,6 +85,15 @@ void GMApp::mainLoop() {
 
   Shader::linkProgram(programID);
 
+  GLuint gridShaderProgramID = glCreateProgram();
+  Shader gridVertexShader;
+  Shader gridFragmentShader;
+  gridVertexShader.compile("GridShader.vs", gridShaderProgramID, true);
+  gridFragmentShader.compile("GridShader.fs", gridShaderProgramID,
+                         false);
+  
+  Shader::linkProgram(gridShaderProgramID);
+
   GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 
   Controls controls = Controls(window);
@@ -92,6 +101,12 @@ void GMApp::mainLoop() {
 
   Model model = Model("simple_model.obj");
 
+  /*
+   * 3D-Grid setup
+   */
+  Grid grid = Grid(50, 1.0);
+                   
+  
   GLuint Texture = loadBMP_custom("bmp_24.bmp");
 
   GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
@@ -101,13 +116,13 @@ void GMApp::mainLoop() {
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-    glUseProgram(programID);
+    glUseProgram(gridShaderProgramID);
 
     controls.computeMatricesFromInputs();
 
     glm::mat4 Projection = controls.getProjectionMatrix();
     glm::mat4 View = controls.getViewMatrix();
-    glm::mat4 ModelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, 0.0f, 0.0f));
+    glm::mat4 ModelMatrix = glm::mat4(1.0f); //glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, 0.0f, 0.0f));
     glm::mat4 MVP = Projection * View * ModelMatrix;
 
     glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
@@ -117,17 +132,19 @@ void GMApp::mainLoop() {
     // Set our "myTextureSampler" sampler to use Texture Unit 0
     glUniform1i(TextureID, 0);
 
-    model.render();
+    // model.render();
 
-    for(int i = 0; i < 10; i++) {
-      glm::mat4 tModelMatrix = glm::translate(ModelMatrix, glm::vec3(i * 5.0f, i * 1.0f, i * 1.0f));
-    glm::mat4 tMVP = Projection * View * tModelMatrix;
+    grid.opengl_draw();
 
-    glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &tMVP[0][0]);
+    // for(int i = 0; i < 10; i++) {
+    //   glm::mat4 tModelMatrix = glm::translate(ModelMatrix, glm::vec3(i * 5.0f, i * 1.0f, i * 1.0f));
+    // glm::mat4 tMVP = Projection * View * tModelMatrix;
+
+    // glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &tMVP[0][0]);
      
-    model.render();
+    // model.render();
     
-    }
+    // }
     
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
