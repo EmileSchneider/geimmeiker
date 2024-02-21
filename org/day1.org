@@ -1,0 +1,58 @@
+* Geimmeiker
+How to make a game ~"from scratch"~ using C++ and OpenGL.
+Goal is to make some kind of strategy game.
+I like Europa Universalis IV, I like Dwarf Fortress,
+I like =the idea= of Total War series, but find the battles
+boring and the campaign shallow.
+
+Lets make something BETTER!
+
+** Day 1
+
+Preparations:
+- create cmake file
+- link and use glew, glfw, glm
+
+Agenda:
+- draw triangles
+- draw pixels on triangles
+- Rotation, Translation, Scale
+- texturing
+- mouse and keyboard input
+- load a model
+
+Goal:
+=We can load an arbitrary, textured obj model made in Blender and zoom, pan, move the camera around it.=
+** Resources
+https://opengl-tutorial.org
+
+https://github.com/TheCherno/Hazel
+
+https://github.com/PardCode/OpenGL-3D-Game-Tutorial-Series
+
+https://github.com/milasudril/glinde/
+
+** Disclaimer
+*I don't know jack about shit.*
+
+_Never done C++, never done OpenGL, never made a game._
+
+~This is a series about failure! I encourage all the haters to leave many comments~
+~and share it with all of their hater friends.~
+
+** Setup
+HP Elitebook 860 G9
+12th Gen Intel Core i7-1260P
+Intel Graphics  ADLGT2
+Fedora 39 Workstation
+Wayland Windowing System
+
+Gimp
+Blender
+Emacs
+g++
+cmake
+and more...
+
+All the software used is free (or even Free Software)
+

@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/eschneider/Programming/geimmeiker/build",
+  "command": "/usr/lib64/ccache/c++   -std=gnu++17 -o CMakeFiles/Geimmeiker.dir/src/main.cpp.o -c /home/eschneider/Programming/geimmeiker/src/main.cpp",
+  "file": "/home/eschneider/Programming/geimmeiker/src/main.cpp",
+  "output": "CMakeFiles/Geimmeiker.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/eschneider/Programming/geimmeiker/build",
+  "command": "/usr/lib64/ccache/c++   -std=gnu++17 -o CMakeFiles/Geimmeiker.dir/src/GMApp.cpp.o -c /home/eschneider/Programming/geimmeiker/src/GMApp.cpp",
+  "file": "/home/eschneider/Programming/geimmeiker/src/GMApp.cpp",
+  "output": "CMakeFiles/Geimmeiker.dir/src/GMApp.cpp.o"
+}
+]

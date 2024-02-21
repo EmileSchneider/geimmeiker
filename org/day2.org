@@ -1,0 +1,15 @@
+* Day 2
+
+
+Sitrep:
+- managed to do almost everything yesterday
+- ~except texturing~
+
+Agenda:
++- finish up controls
++- load more models+
++- texturing+
+- shading and lighting
+    
+  
+  
