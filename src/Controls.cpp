@@ -47,6 +47,11 @@ void Controls::computeMatricesFromInputs() {
 	
 	glm::vec3 up = glm::cross( right, direction );
 
+    if (glfwGetKey(c_window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS){
+      speed = 6.0f;
+	} else {
+      speed = 3.0f;
+    }
 	// Move forward
 	if (glfwGetKey(c_window, GLFW_KEY_W ) == GLFW_PRESS){
 		position += direction * deltaTime * speed;
