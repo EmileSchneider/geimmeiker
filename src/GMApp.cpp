@@ -12,10 +12,12 @@ using namespace std;
 
 #include <GL/glew.h>
 
+#include "Boid.hpp"
 #include "Controls.hpp"
 #include "GMApp.hpp"
 #include "Grid.hpp"
 #include "Model.hpp"
+#include "SceneObject.hpp"
 #include "Shader.hpp"
 #include "objloader.hpp"
 #include "texture.hpp"
@@ -108,16 +110,11 @@ void GMApp::mainLoop() {
   GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
 
   // BOID
-  Model boid = Model("boid.obj");
+  std::vector<Boid> boids;
+  for (int i = 0; i < 10; i++) {
+    boids.push_back(Boid());
+  }
 
-  GLuint boidShaderProgramID = glCreateProgram();
-  Shader boidVertexShader;
-  Shader boiddFragmentShader;
-  gridVertexShader.compile("BoidShader.vs", boidShaderProgramID, true);
-  gridFragmentShader.compile("BoidShader.fs", boidShaderProgramID, false);
-
-  Shader::linkProgram(boidShaderProgramID);
-  
   do {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -127,43 +124,22 @@ void GMApp::mainLoop() {
     glUseProgram(programID);
     controls.computeMatricesFromInputs();
 
+    // RENDER
     glm::mat4 Projection = controls.getProjectionMatrix();
     glm::mat4 View = controls.getViewMatrix();
-    glm::mat4 ModelMatrix = glm::mat4(
-        1.0f); // glm::translate(glm::mat4(1.0f), glm::vec3(1.5f, 0.0f, 0.0f));
-    glm::mat4 MVP = Projection * View * ModelMatrix;
 
-    glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, Texture);
-    // Set our "myTextureSampler" sampler to use Texture Unit 0
-    glUniform1i(TextureID, 0);
-
-    model.render();
-
-    for (int i = 0; i < 10; i++) {
-      glm::mat4 tModelMatrix =
-          glm::translate(ModelMatrix, glm::vec3(i * 5.0f, i * 1.0f, i * 1.0f));
-      glm::mat4 tMVP = Projection * View * tModelMatrix;
-
-      glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &tMVP[0][0]);
-
-      model.render();
+    for (Boid boid : boids) {
+      boid.render(View, Projection);
     }
 
+    // render grid
     glUseProgram(gridShaderProgramID);
+    glm::mat4 ModelMatrix = glm::mat4(1.0f);
+    glm::mat4 MVP = Projection * View * ModelMatrix;
     glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
-    
     grid.opengl_draw();
 
-    glUseProgram(boidShaderProgramID);
-
-    glm::mat4 bMVP = Projection * View * glm::translate(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));  
-    glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &bMVP[0][0]);
-    
-    boid.render();
-    
+    // frame reset
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
     glfwSwapBuffers(window);

@@ -22,7 +22,6 @@ private:
   float verticalAngle = 0.0f;
   float initialFoV = 45.0f;
   float speed = 3.0f;
-  float speedFast = 3.0f;
   float mouseSpeed = 0.00025f;
   glm::mat4 ViewMatrix;
   glm::mat4 ProjectionMatrix;
